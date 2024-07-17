@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/gocolly/colly"
 	"os"
+	"strings"
 )
 
 type CountyData struct {
@@ -31,7 +32,7 @@ func main() {
 					Code:         rowData[0],
 					County:       rowData[1],
 					HeadQuarters: rowData[2],
-					SubCounties:  rowData[3],
+					SubCounties:  removeSpaces(rowData[3]),
 				}
 				CountiesData = append(CountiesData, county)
 			}
@@ -68,4 +69,13 @@ func main() {
 		fmt.Println("Error when writing to file: ", err4)
 	}
 
+}
+
+func removeSpaces(sentence string) string {
+	parts := strings.Split(sentence, ",")
+	for i, part := range parts {
+		parts[i] = strings.TrimSpace(part)
+	}
+	result := strings.Join(parts, ",")
+	return result
 }
